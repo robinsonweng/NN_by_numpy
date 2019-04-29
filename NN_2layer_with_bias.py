@@ -31,38 +31,6 @@ def sigmoid(x, De=False):
         out = sigmoid(x)
         return out *(1 - out)
 
-def FP_BP_nB(training_rate, training_times):
-    """Training NN with out bias"""
-    #init data
-    eta = training_rate
-    training, output = np_data()
-    #init weight
-    w1 = np.random.random((4, 4))
-    w2 = np.random.random((1, 4)) 
-    
-
-    for times in range(training_times):
-        #FP
-        l0 = training # 8X4
-        l1 = sigmoid(np.dot(l0, w1.T)) #8X4
-        l2 = sigmoid(np.dot(l1, w2.T)) #8X1
-        #errot
-        error = output - l2#8X1 
-        #MSE
-        E = 1/2 * pow(error, 2)
-        if times % 1000 == 0:
-            print(np.mean(np.abs(E)))
-
-        #BP
-        delta = error * sigmoid(np.dot(l1, w2.T), De=True) #8X1
-        delta_w2 = delta.T.dot(l1) #1X4
-        delta_w1 = (np.dot(delta, w2) * sigmoid(np.dot(l0, w1.T))).T.dot(l0) #4X4
-        #update
-        w2 += eta * delta_w2
-        w1 += eta * delta_w1
-        
-    return w1, w2
-
 def FP_BP_wB(training_rate, traning_times):
     """Training NN with bias"""
     #init data
